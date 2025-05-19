@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bf501npeoutn4"]
+[gd_scene load_steps=0 format=3 uid="uid://bf501npeoutn4"]
 
 [node name="arrow" type="Line2D"]
 top_level = true
