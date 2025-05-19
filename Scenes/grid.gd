@@ -104,4 +104,4 @@ func camera_centre():
 func _process(delta):
 	touch_input()
 # хуйхухуй
-# пизда
+# AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
