@@ -105,3 +105,4 @@ func _process(delta):
 	touch_input()
 # хуйхухуй
 # AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+#1
