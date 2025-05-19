@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3u2v0vhu2mim"]
+
+[ext_resource type="PackedScene" uid="uid://dqwbmnslnnpkp" path="res://Scenes/hex.tscn" id="1_1ptu7"]
+[ext_resource type="Texture2D" uid="uid://bsf6v5q0u1rej" path="res://Sprites/heal.png" id="2_40pr6"]
+
+[node name="hex_heal" instance=ExtResource("1_1ptu7")]
+
+[node name="Hex" parent="." index="0"]
+modulate = Color(0.956863, 0.196078, 0.196078, 1)
+
+[node name="icon" parent="." index="1"]
+texture = ExtResource("2_40pr6")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqwbmnslnnpkp"]
+
+[ext_resource type="Texture2D" uid="uid://1qamw4cj837r" path="res://Sprites/hex.png" id="1_tje73"]
+
+[node name="hex" type="Node2D"]
+
+[node name="Hex" type="Sprite2D" parent="."]
+texture = ExtResource("1_tje73")
+
+[node name="icon" type="Sprite2D" parent="."]

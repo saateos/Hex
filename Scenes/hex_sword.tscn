@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c48a42sogpyo3"]
+
+[ext_resource type="PackedScene" uid="uid://dqwbmnslnnpkp" path="res://Scenes/hex.tscn" id="1_pd1rh"]
+[ext_resource type="Texture2D" uid="uid://cl3i8pda3iosj" path="res://Sprites/sword.png" id="2_6k5mw"]
+
+[node name="hex_sword" instance=ExtResource("1_pd1rh")]
+
+[node name="Hex" parent="." index="0"]
+modulate = Color(0.683077, 0.683077, 0.683077, 1)
+
+[node name="icon" parent="." index="1"]
+texture = ExtResource("2_6k5mw")
