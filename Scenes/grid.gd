@@ -103,3 +103,4 @@ func camera_centre():
 	%Camera.position = hex_to_pixel(Vector2(half, half))
 func _process(delta):
 	touch_input()
+# хуйхухуй
