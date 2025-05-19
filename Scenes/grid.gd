@@ -61,27 +61,36 @@ func axial_round(vector):
 	else:
 		return Vector2(xgrid, ygrid + round(vector.y + 0.5 * vector.x))
 # координаты пикселей в координаты хексов
-func pixel_to_hex(touch):
+func pixel_to_hex(touchCoords):
 	var q
 	var r
 	if pointy == true:
-		q = (-1./3 * touch.y + sqrt(3)/3 * touch.x) / size_off
-		r = (2./3 * touch.y) / size_off
+		q = (-1./3 * touchCoords.y + sqrt(3)/3 * touchCoords.x) / size_off
+		r = (2./3 * touchCoords.y) / size_off
 	else:
-		q = (2./3 * touch.x) / size_off
-		r = (-1./3 * touch.x  +  sqrt(3)/3 * touch.y) / size_off
+		q = (2./3 * touchCoords.x) / size_off
+		r = (-1./3 * touchCoords.x  +  sqrt(3)/3 * touchCoords.y) / size_off
 	return axial_round(Vector2(q, r))
 # регистрируем нажатие
 var touch = Vector2(0, 0)
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
-	if Input.is_action_just_pressed("touch"):
+	#if Input.is_action_just_pressed("touch"):
+		#touch = pixel_to_hex(mouse_coords)
+		#print(pixel_to_hex(mouse_coords))
+		#select.append(touch)
+	if Input.is_action_pressed("touch"):
 		touch = pixel_to_hex(mouse_coords)
-		print(pixel_to_hex(mouse_coords))
-		select.append(touch)
+		if touch not in select:
+			print(pixel_to_hex(mouse_coords))
+			select.append(touch)
+			print(select)
+		elif select.find(touch)==select.size()-2:
+			select.pop_back()
+			print(select)
 	if Input.is_action_just_released("touch"):
 		print(select)
-		#select.clear()
+		select.clear()
 
 # получаем индексы хекс координат
 func find_hex_index(array, hex):
@@ -103,6 +112,3 @@ func camera_centre():
 	%Camera.position = hex_to_pixel(Vector2(half, half))
 func _process(delta):
 	touch_input()
-# хуйхухуй
-# AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-#1
