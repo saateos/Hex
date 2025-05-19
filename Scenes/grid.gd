@@ -8,6 +8,8 @@ var possible_pieces = [
 	preload("uid://b3u2v0vhu2mim"), #heal
 	preload("uid://dkwfx76jqq7g") #coin
 ]
+var line = preload("uid://bf501npeoutn4") #arrow
+var arrow = line.instantiate()
 @export var pointy = false
 @export var side = 4
 @export var offset = 5
@@ -22,6 +24,7 @@ func _ready():
 	grid = create_grid()
 	grid = set_hex(grid)
 	camera_centre()
+	add_child(arrow)
 	spawn()
 # создаем сетку хексов
 func create_grid():
@@ -75,22 +78,21 @@ func pixel_to_hex(touchCoords):
 var touch = Vector2(0, 0)
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
-	#if Input.is_action_just_pressed("touch"):
-		#touch = pixel_to_hex(mouse_coords)
-		#print(pixel_to_hex(mouse_coords))
-		#select.append(touch)
 	if Input.is_action_pressed("touch"):
 		touch = pixel_to_hex(mouse_coords)
 		if touch not in select:
 			print(pixel_to_hex(mouse_coords))
 			select.append(touch)
+			arrow.add_point(hex_to_pixel(touch))
 			print(select)
 		elif select.find(touch)==select.size()-2:
 			select.pop_back()
+			arrow.remove_point(arrow.get_point_count() - 1)
 			print(select)
 	if Input.is_action_just_released("touch"):
 		print(select)
 		select.clear()
+		arrow.clear_points()
 
 # получаем индексы хекс координат
 func find_hex_index(array, hex):

@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://1qamw4cj837r" path="res://Sprites/hex.png" id="1_tje73"]
 
 [node name="hex" type="Node2D"]
+visibility_layer = 3
 
 [node name="Hex" type="Sprite2D" parent="."]
 texture = ExtResource("1_tje73")
