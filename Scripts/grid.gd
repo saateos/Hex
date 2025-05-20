@@ -20,6 +20,10 @@ var size_off = size + offset
 var width : int = ( side * 2 ) - 1
 var half : int = (width / 2)
 
+var touch = Vector2(0, 0)
+var select = []
+var controlling = false
+
 # функция запуска
 func _ready():
 	grid = create_grid()
@@ -28,6 +32,10 @@ func _ready():
 	camera_centre()
 	add_child(arrow)
 	spawn()
+
+func _process(delta):
+	touch_input()
+
 # создаем сетку хексов
 func create_grid():
 	var array = []
@@ -77,18 +85,16 @@ func pixel_to_hex(touchCoords):
 		r = (-1./3 * touchCoords.x  +  sqrt(3)/3 * touchCoords.y) / size_off
 	return axial_round(Vector2(q, r))
 # регистрируем нажатие
-var touch = Vector2(0, 0)
-var select = []
-var controlling = false
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
 	touch = pixel_to_hex(mouse_coords)
-	if if_in_grid(grid, touch):
+	if is_in_grid(grid, touch):
 		if Input.is_action_just_pressed("touch"):
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
 			controlling = true
 		if Input.is_action_pressed("touch") and controlling:
+			# проверяем, что два последних хекса одного вида и соседи
 			if get_hex(grid, select[-1]).hex_type == get_hex(grid, touch).hex_type and is_neighbor(touch, select[-1]):
 				if touch not in select:
 					print(pixel_to_hex(mouse_coords))
@@ -117,7 +123,7 @@ func get_hex(grid, hex):
 	var indexes = find_hex_index(grid, hex)
 	return spawned_grid[indexes.x][indexes.y]
 # проверяем находится ли клетка в сетке
-func if_in_grid(array, hex):
+func is_in_grid(array, hex):
 	for i in array.size():
 		if hex in array[i]:
 			return true
@@ -150,5 +156,3 @@ func spawn():
 # центруем камеру по сетке
 func camera_centre():
 	%Camera.position = hex_to_pixel(Vector2(half, half))
-func _process(delta):
-	touch_input()
