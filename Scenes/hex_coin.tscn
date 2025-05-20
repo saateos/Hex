@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://qtfae7mugkio" path="res://Sprites/coins.png" id="2_eh5eb"]
 
 [node name="hex_coin" instance=ExtResource("1_3biq1")]
+hex_type = "coin"
 
 [node name="Hex" parent="." index="0"]
 modulate = Color(0.917647, 1, 0.227451, 1)

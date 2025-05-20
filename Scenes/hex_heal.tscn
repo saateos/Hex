@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bsf6v5q0u1rej" path="res://Sprites/heal.png" id="2_40pr6"]
 
 [node name="hex_heal" instance=ExtResource("1_1ptu7")]
+hex_type = "heal"
 
 [node name="Hex" parent="." index="0"]
 modulate = Color(0.956863, 0.196078, 0.196078, 1)

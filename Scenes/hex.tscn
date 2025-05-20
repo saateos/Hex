@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqwbmnslnnpkp"]
+[gd_scene load_steps=3 format=3 uid="uid://dqwbmnslnnpkp"]
 
+[ext_resource type="Script" uid="uid://dal38ifb8vgpl" path="res://Scripts/hex.gd" id="1_23esk"]
 [ext_resource type="Texture2D" uid="uid://1qamw4cj837r" path="res://Sprites/hex.png" id="1_tje73"]
 
 [node name="hex" type="Node2D"]
 visibility_layer = 3
+script = ExtResource("1_23esk")
 
 [node name="Hex" type="Sprite2D" parent="."]
 texture = ExtResource("1_tje73")
