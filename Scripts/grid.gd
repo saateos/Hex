@@ -143,6 +143,7 @@ func is_completed_chain(array):
 func chain_behavior(array):
 	for i in array.size():
 		get_hex(grid, array[i]).disappear()
+		spawned_grid[i] = null
 # Спавним хексы
 func spawn():
 	for i in grid.size():
