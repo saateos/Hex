@@ -142,7 +142,7 @@ func is_completed_chain(array):
 # взоимодействие с цепочкой, что делать после мэтча
 func chain_behavior(array):
 	for i in array.size():
-		get_hex(grid, array[i]).dim()
+		get_hex(grid, array[i]).disappear()
 # Спавним хексы
 func spawn():
 	for i in grid.size():
