@@ -12,7 +12,7 @@ var possible_hexes = [
 var line = preload("uid://bf501npeoutn4") #arrow
 var arrow = line.instantiate()
 @export var pointy = false
-@export var side = 4
+@export var side = 5
 @export var offset = 5
 @export var size = 123
 
@@ -83,25 +83,26 @@ var controlling = false
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
 	touch = pixel_to_hex(mouse_coords)
-	if if_in_grid(grid, touch) == true:
+	if if_in_grid(grid, touch):
 		if Input.is_action_just_pressed("touch"):
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
 			controlling = true
 		if Input.is_action_pressed("touch") and controlling:
-			if touch not in select and is_neighbor(touch, select[-1]):
-				print(get_hex(grid, select[-1]).hex_type)
-				print(get_hex(grid, touch).hex_type)
-				print(pixel_to_hex(mouse_coords))
-				select.append(touch)
-				arrow.add_point(hex_to_pixel(touch))
-				print(select)
-			elif select.find(touch)==select.size()-2:
-				select.pop_back()
-				arrow.remove_point(arrow.get_point_count() - 1)
-				print(select)
+			if get_hex(grid, select[-1]).hex_type == get_hex(grid, touch).hex_type and is_neighbor(touch, select[-1]):
+				if touch not in select:
+					print(pixel_to_hex(mouse_coords))
+					select.append(touch)
+					arrow.add_point(hex_to_pixel(touch))
+					print(select)
+				elif select.find(touch)==select.size()-2:
+					select.pop_back()
+					arrow.remove_point(arrow.get_point_count() - 1)
+					print(select)
 	if Input.is_action_just_released("touch"):
 		print(select)
+		if is_completed_chain(select):
+			chain_behavior(select)
 		select.clear()
 		arrow.clear_points()
 		controlling = false
@@ -128,6 +129,14 @@ func is_neighbor(hex_1, hex_2):
 	]
 	if hex_1 - hex_2 in directions:
 		return true
+# цепочка из 3х и больше элементов
+func is_completed_chain(array):
+	if array.size() >= 3:
+		return true
+# взоимодействие с цепочкой, что делать после мэтча
+func chain_behavior(array):
+	for i in array.size():
+		get_hex(grid, array[i]).dim()
 # Спавним хексы
 func spawn():
 	for i in grid.size():
