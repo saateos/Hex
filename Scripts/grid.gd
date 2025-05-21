@@ -93,7 +93,7 @@ func touch_input():
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
 			controlling = true
-		if Input.is_action_pressed("touch") and controlling:
+		if Input.is_action_pressed("touch") and controlling and get_hex(grid, touch) != null:
 			# проверяем, что два последних хекса одного вида и соседи
 			if get_hex(grid, select[-1]).hex_type == get_hex(grid, touch).hex_type and is_neighbor(touch, select[-1]):
 				if touch not in select:
@@ -143,6 +143,9 @@ func is_completed_chain(array):
 func chain_behavior(array):
 	for i in array.size():
 		get_hex(grid, array[i]).disappear()
+		var index = find_hex_index(grid, array[i])
+		spawned_grid[index.x][index.y] = null
+		
 # Спавним хексы
 func spawn():
 	for i in grid.size():
