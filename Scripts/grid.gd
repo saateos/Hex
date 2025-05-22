@@ -147,7 +147,7 @@ func is_completed_chain(array):
 func chain_behavior(array):
 	for i in array:
 		get_hex(grid, i).disappear()
-		var index = find_hex_index(grid, array[i])
+		var index = find_hex_index(grid, i)
 		spawned_grid[index.x][index.y] = null
 func collapse():
 	for i in width:
