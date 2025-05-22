@@ -18,7 +18,7 @@ var arrow = line.instantiate()
 
 var size_off = size + offset
 var width : int = ( side * 2 ) - 1
-var half : int = (width / 2)
+var half : int = side - 1
 
 var touch = Vector2(0, 0)
 var select = []
@@ -33,7 +33,7 @@ func _ready():
 	add_child(arrow)
 	spawn()
 
-func _process(delta):
+func _process(_delta):
 	touch_input()
 
 # создаем сетку хексов
@@ -119,8 +119,8 @@ func find_hex_index(array, hex):
 			if array[i][j] == hex:
 				return Vector2(i, j)
 # получаем хекс по индексам массива массивов
-func get_hex(grid, hex):
-	var indexes = find_hex_index(grid, hex)
+func get_hex(current_grid, hex):
+	var indexes = find_hex_index(current_grid, hex)
 	return spawned_grid[indexes.x][indexes.y]
 # проверяем находится ли клетка в сетке
 func is_in_grid(array, hex):
@@ -141,8 +141,8 @@ func is_completed_chain(array):
 		return true
 # взоимодействие с цепочкой, что делать после мэтча
 func chain_behavior(array):
-	for i in array.size():
-		get_hex(grid, array[i]).disappear()
+	for i in array:
+		get_hex(grid, i).disappear()
 # Спавним хексы
 func spawn():
 	for i in grid.size():
