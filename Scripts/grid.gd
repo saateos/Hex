@@ -35,7 +35,7 @@ func _ready():
 
 func _process(_delta):
 	touch_input()
-
+	collapse()
 # создаем сетку хексов
 func create_grid():
 	var array = []
@@ -92,25 +92,29 @@ func touch_input():
 		if Input.is_action_just_pressed("touch"):
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
+			print("current click:" + str(pixel_to_hex(mouse_coords)))
+			print("next hex:" + str(pixel_to_hex(mouse_coords) + Vector2(0, -1)))
 			controlling = true
-		if Input.is_action_pressed("touch") and controlling:
+		if Input.is_action_pressed("touch") and controlling and get_hex(grid, touch) != null:
 			# проверяем, что два последних хекса одного вида и соседи
 			if get_hex(grid, select[-1]).hex_type == get_hex(grid, touch).hex_type and is_neighbor(touch, select[-1]):
 				if touch not in select:
-					print(pixel_to_hex(mouse_coords))
+					#print(pixel_to_hex(mouse_coords))
 					select.append(touch)
 					arrow.add_point(hex_to_pixel(touch))
-					print(select)
+					#print(select)
 				elif select.find(touch)==select.size()-2:
 					select.pop_back()
 					arrow.remove_point(arrow.get_point_count() - 1)
-					print(select)
+					#print(select)
 	if Input.is_action_just_released("touch"):
-		print(select)
+		#print(select)
 		if is_completed_chain(select):
 			chain_behavior(select)
+			
 		select.clear()
 		arrow.clear_points()
+		
 		controlling = false
 # получаем индексы хекс координат
 func find_hex_index(array, hex):
@@ -143,6 +147,19 @@ func is_completed_chain(array):
 func chain_behavior(array):
 	for i in array:
 		get_hex(grid, i).disappear()
+		var index = find_hex_index(grid, array[i])
+		spawned_grid[index.x][index.y] = null
+func collapse():
+	for i in width:
+		for j in (2 * half + 1) - abs(half - i):
+			if spawned_grid[i][j] == null:
+				for k in width:
+					var next_hex = grid[i][j] + Vector2(0, -1)
+					if is_in_grid(grid, next_hex) and get_hex(grid, next_hex) != null:
+						var next_index = find_hex_index(grid, next_hex)
+						spawned_grid[next_index.x][next_index.y].move(hex_to_pixel(grid[i][j]))
+						spawned_grid[i][j] = spawned_grid[next_index.x][next_index.y]
+						spawned_grid[next_index.x][next_index.y] = null
 # Спавним хексы
 func spawn():
 	for i in grid.size():
