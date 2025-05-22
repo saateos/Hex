@@ -28,10 +28,11 @@ var controlling = false
 func _ready():
 	grid = create_grid()
 	grid = set_hex(grid)
+	print(grid)
 	spawned_grid = create_grid()
 	camera_centre()
-	add_child(arrow)
 	spawn()
+	add_child(arrow)
 
 func _process(delta):
 	touch_input()
@@ -93,7 +94,7 @@ func touch_input():
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
 			print("current click:" + str(pixel_to_hex(mouse_coords)))
-			print("next hex:" + str(pixel_to_hex(mouse_coords) + Vector2(0, -1)))
+			#print("next hex:" + str(pixel_to_hex(mouse_coords) + Vector2(0, -1)))
 			controlling = true
 		if Input.is_action_pressed("touch") and controlling and get_hex(grid, touch) != null:
 			# проверяем, что два последних хекса одного вида и соседи
@@ -111,7 +112,6 @@ func touch_input():
 		#print(select)
 		if is_completed_chain(select):
 			chain_behavior(select)
-			
 		select.clear()
 		arrow.clear_points()
 		
@@ -120,7 +120,7 @@ func touch_input():
 func find_hex_index(array, hex):
 	for i in array.size():
 		for j in array[i].size():
-			if array[i][j] == hex:
+			if  hex == array[i][j]:
 				return Vector2(i, j)
 # получаем хекс по индексам массива массивов
 func get_hex(grid, hex):
@@ -139,6 +139,12 @@ func is_neighbor(hex_1, hex_2):
 	]
 	if hex_1 - hex_2 in directions:
 		return true
+func is_has_null(array):
+	for i in array.size():
+		for j in array[i].size():
+			if array[i][j] == null:
+				return true
+				break
 # цепочка из 3х и больше элементов
 func is_completed_chain(array):
 	if array.size() >= 3:
@@ -149,6 +155,7 @@ func chain_behavior(array):
 		get_hex(grid, array[i]).disappear()
 		var index = find_hex_index(grid, array[i])
 		spawned_grid[index.x][index.y] = null
+# коллапсим столбцы
 func collapse():
 	for i in width:
 		for j in (2 * half + 1) - abs(half - i):
