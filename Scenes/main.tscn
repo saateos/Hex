@@ -6,8 +6,14 @@
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-zoom = Vector2(0.4, 0.4)
+zoom = Vector2(0.5, 0.5)
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_jjgbg")
 pointy = true
+
+[node name="spawn_timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="timeout" from="spawn_timer" to="grid" method="_on_spawn_timer_timeout"]

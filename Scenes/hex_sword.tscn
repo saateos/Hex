@@ -4,10 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cl3i8pda3iosj" path="res://Sprites/sword.png" id="2_6k5mw"]
 
 [node name="hex_sword" instance=ExtResource("1_pd1rh")]
-hex_type = "sword"
-
-[node name="Hex" parent="." index="0"]
-modulate = Color(0.683077, 0.683077, 0.683077, 1)
+hex_type = "attack"
+color = Color(0.683077, 0.683077, 0.683077, 1)
 
 [node name="icon" parent="." index="1"]
 texture = ExtResource("2_6k5mw")

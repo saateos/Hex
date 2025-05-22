@@ -5,9 +5,7 @@
 
 [node name="hex_shield" instance=ExtResource("1_tuu2a")]
 hex_type = "shield"
-
-[node name="Hex" parent="." index="0"]
-modulate = Color(0.321569, 0.560784, 1, 1)
+color = Color(0.25098, 0.513726, 0.996078, 1)
 
 [node name="icon" parent="." index="1"]
 texture = ExtResource("2_bv3a6")

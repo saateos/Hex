@@ -12,7 +12,7 @@ var possible_hexes = [
 var line = preload("uid://bf501npeoutn4") #arrow
 var arrow = line.instantiate()
 @export var pointy = false
-@export var side = 5
+@export var side = 4
 @export var offset = 5
 @export var size = 123
 
@@ -31,12 +31,11 @@ func _ready():
 	print(grid)
 	spawned_grid = create_grid()
 	camera_centre()
-	spawn()
 	add_child(arrow)
+	spawn()
 
 func _process(_delta):
 	touch_input()
-	collapse()
 # создаем сетку хексов
 func create_grid():
 	var array = []
@@ -114,8 +113,9 @@ func touch_input():
 			chain_behavior(select)
 		select.clear()
 		arrow.clear_points()
-		
+		collapse()
 		controlling = false
+		get_parent().get_node("spawn_timer").start()
 # получаем индексы хекс координат
 func find_hex_index(array, hex):
 	for i in array.size():
@@ -144,7 +144,6 @@ func is_has_null(array):
 		for j in array[i].size():
 			if array[i][j] == null:
 				return true
-				break
 # цепочка из 3х и больше элементов
 func is_completed_chain(array):
 	if array.size() >= 3:
@@ -157,26 +156,33 @@ func chain_behavior(array):
 		spawned_grid[index.x][index.y] = null
 # коллапсим столбцы
 func collapse():
-	for i in width:
-		for j in (2 * half + 1) - abs(half - i):
-			if spawned_grid[i][j] == null:
-				for k in width:
-					var next_hex = grid[i][j] + Vector2(0, -1)
-					if is_in_grid(grid, next_hex) and get_hex(grid, next_hex) != null:
-						var next_index = find_hex_index(grid, next_hex)
-						spawned_grid[next_index.x][next_index.y].move(hex_to_pixel(grid[i][j]))
-						spawned_grid[i][j] = spawned_grid[next_index.x][next_index.y]
-						spawned_grid[next_index.x][next_index.y] = null
+	for k in width:
+		for i in width:
+			for j in (2 * half + 1) - abs(half - i):
+				if spawned_grid[i][j] == null:
+						var next_hex = grid[i][j] + Vector2(0, -1)
+						if is_in_grid(grid, next_hex) and get_hex(grid, next_hex) != null:
+							var next_index = find_hex_index(grid, next_hex)
+							spawned_grid[next_index.x][next_index.y].move(hex_to_pixel(grid[i][j]))
+							spawned_grid[i][j] = spawned_grid[next_index.x][next_index.y]
+							spawned_grid[next_index.x][next_index.y] = null
 # Спавним хексы
 func spawn():
-	for i in grid.size():
-		for j in grid[i].size():
-			var hex = possible_hexes.pick_random().instantiate()
-			add_child(hex)
-			hex.position = hex_to_pixel(grid[i][j])
-			if pointy == true:
-				hex.get_child(0).rotation_degrees = 90
-			spawned_grid[i][j] = hex
+	if is_has_null(spawned_grid):
+		for i in grid.size():
+			for j in grid[i].size():
+				if spawned_grid[i][j] == null:
+					var hex = possible_hexes.pick_random().instantiate()
+					add_child(hex)
+					hex.position = hex_to_pixel(grid[i][j])
+					if pointy == true:
+						hex.get_child(0).rotation_degrees = 90
+					spawned_grid[i][j] = hex
+					hex.appear()
 # центруем камеру по сетке
 func camera_centre():
 	%Camera.position = hex_to_pixel(Vector2(half, half))
+
+
+func _on_spawn_timer_timeout() -> void:
+	spawn()

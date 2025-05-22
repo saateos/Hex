@@ -4,7 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://dvsad5votuia4" path="res://Sprites/skull.png" id="2_6niev"]
 
 [node name="hex_skull" instance=ExtResource("1_uoi75")]
-hex_type = "skull"
+hex_type = "attack"
+color = Color(1, 1, 1, 1)
 
 [node name="icon" parent="." index="1"]
 texture = ExtResource("2_6niev")

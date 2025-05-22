@@ -5,9 +5,7 @@
 
 [node name="hex_coin" instance=ExtResource("1_3biq1")]
 hex_type = "coin"
-
-[node name="Hex" parent="." index="0"]
-modulate = Color(0.917647, 1, 0.227451, 1)
+color = Color(0.917647, 1, 0.247059, 1)
 
 [node name="icon" parent="." index="1"]
 texture = ExtResource("2_eh5eb")
