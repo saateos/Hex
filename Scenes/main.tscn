@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bw5lxb6pg3igs"]
 
-[ext_resource type="Script" uid="uid://dmagkvckoqlno" path="res://Scripts/gold_count.gd" id="1_bo1nx"]
+[ext_resource type="Script" path="res://Scripts/gold_count.gd" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://tmx2fxbm3com" path="res://Scripts/grid.gd" id="1_jjgbg"]
 
 [node name="Main" type="Node2D"]

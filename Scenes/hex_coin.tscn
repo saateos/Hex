@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dqwbmnslnnpkp" path="res://Scenes/hex.tscn" id="1_3biq1"]
 [ext_resource type="Texture2D" uid="uid://qtfae7mugkio" path="res://Sprites/coins.png" id="2_eh5eb"]
-[ext_resource type="Script" uid="uid://bdyqapy0f1jpd" path="res://Scripts/behavior.gd" id="2_rrgk5"]
+[ext_resource type="Script" path="res://Scripts/behavior.gd" id="2_rrgk5"]
 
 [node name="hex_coin" groups=["coin"] instance=ExtResource("1_3biq1")]
 hex_type = "coin"
@@ -10,7 +10,7 @@ color = Color(0.917647, 1, 0.247059, 1)
 
 [node name="Behavior" type="Node2D" parent="." index="0"]
 script = ExtResource("2_rrgk5")
-value = 2
+value = 1
 
 [node name="icon" parent="sprite" index="0"]
 texture = ExtResource("2_eh5eb")
