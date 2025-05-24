@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw5lxb6pg3igs"]
+[gd_scene load_steps=3 format=3 uid="uid://bw5lxb6pg3igs"]
 
+[ext_resource type="Script" uid="uid://dmagkvckoqlno" path="res://Scripts/gold_count.gd" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://tmx2fxbm3com" path="res://Scripts/grid.gd" id="1_jjgbg"]
 
 [node name="Main" type="Node2D"]
@@ -7,6 +8,20 @@
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
 zoom = Vector2(0.5, 0.5)
+
+[node name="UI" type="Node2D" parent="Camera"]
+
+[node name="Gold" type="Node2D" parent="Camera/UI"]
+
+[node name="gold_count" type="Label" parent="Camera/UI/Gold" groups=["coin"]]
+top_level = true
+offset_left = -275.0
+offset_top = -42.0
+offset_right = 225.0
+offset_bottom = 163.0
+theme_override_font_sizes/font_size = 150
+text = "COINS:"
+script = ExtResource("1_bo1nx")
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_jjgbg")

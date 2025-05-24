@@ -7,5 +7,5 @@
 hex_type = "shield"
 color = Color(0.25098, 0.513726, 0.996078, 1)
 
-[node name="icon" parent="." index="1"]
+[node name="icon" parent="sprite" index="0"]
 texture = ExtResource("2_bv3a6")

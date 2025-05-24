@@ -5,9 +5,11 @@
 
 [node name="hex" type="Node2D"]
 visibility_layer = 3
+rotation = 1.5708
 script = ExtResource("1_23esk")
 
 [node name="sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_tje73")
 
-[node name="icon" type="Sprite2D" parent="."]
+[node name="icon" type="Sprite2D" parent="sprite"]
+rotation = -1.5708

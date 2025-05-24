@@ -7,5 +7,5 @@
 hex_type = "attack"
 color = Color(1, 1, 1, 1)
 
-[node name="icon" parent="." index="1"]
+[node name="icon" parent="sprite" index="0"]
 texture = ExtResource("2_6niev")

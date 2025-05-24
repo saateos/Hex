@@ -175,14 +175,13 @@ func spawn():
 					var hex = possible_hexes.pick_random().instantiate()
 					add_child(hex)
 					hex.position = hex_to_pixel(grid[i][j])
-					if pointy == true:
-						hex.get_child(0).rotation_degrees = 90
+					#if pointy == true:
+						#hex.get_child(0).rotation_degrees = 90
 					spawned_grid[i][j] = hex
 					hex.appear()
 # центруем камеру по сетке
 func camera_centre():
 	%Camera.position = hex_to_pixel(Vector2(half, half))
-
 
 func _on_spawn_timer_timeout() -> void:
 	spawn()

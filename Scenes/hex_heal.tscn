@@ -7,5 +7,6 @@
 hex_type = "heal"
 color = Color(0.956863, 0.196078, 0.196078, 1)
 
-[node name="icon" parent="." index="1"]
+[node name="icon" parent="sprite" index="0"]
+rotation = -1.5708
 texture = ExtResource("2_40pr6")
