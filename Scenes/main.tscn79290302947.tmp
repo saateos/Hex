@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bkf6vt5kylni3" path="res://Scripts/camera.gd" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://tmx2fxbm3com" path="res://Scripts/grid.gd" id="1_jjgbg"]
-[ext_resource type="Script" uid="uid://ddf6gmpfpt0jj" path="res://Scripts/panel.gd" id="2_kry3j"]
+[ext_resource type="Script" uid="uid://c33vb20iabul" path="res://Scripts/panel.gd" id="2_kry3j"]
 [ext_resource type="Script" uid="uid://dmagkvckoqlno" path="res://Scripts/coins_count.gd" id="3_8gbba"]
 [ext_resource type="LabelSettings" uid="uid://ch17ktlsmcjti" path="res://Resources/label_settings.tres" id="4_jjvhh"]
 
@@ -14,11 +14,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("1_8gbba")
+grid = NodePath("../grid")
 
 [node name="Panel" type="Panel" parent="."]
-self_modulate = Color(0.398132, 0.59403, 1, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,9 +29,13 @@ script = ExtResource("2_kry3j")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 10.0
+offset_right = -25.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -65,7 +69,5 @@ script = ExtResource("1_jjgbg")
 [node name="spawn_timer" type="Timer" parent="grid"]
 wait_time = 0.6
 one_shot = true
-
-[node name="CanvasGroup" type="CanvasGroup" parent="."]
 
 [connection signal="timeout" from="grid/spawn_timer" to="grid" method="_on_spawn_timer_timeout"]

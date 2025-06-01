@@ -1,6 +1,7 @@
 extends Node2D
+class_name Grid
 # переменные
-var grid = []
+var coords_grid = []
 var spawned_grid = []
 var possible_hexes = [
 	preload("uid://co1op7rdm2tnr"), #skull
@@ -11,12 +12,11 @@ var possible_hexes = [
 ]
 var line = preload("uid://bf501npeoutn4") #arrow
 var arrow = line.instantiate()
-@export var pointy = false
 @export var side = 4
-@export var offset = 5
+@export var offset = 100
+@export var gap = 5
 @export var size = 123
 
-var size_off = size + offset
 var width : int = ( side * 2 ) - 1
 var half : int = side - 1
 
@@ -26,11 +26,8 @@ var controlling = false
 
 # функция запуска
 func _ready():
-	grid = create_grid()
-	grid = set_hex(grid)
-	print(grid)
+	coords_grid = set_hex(create_grid())
 	spawned_grid = create_grid()
-	camera_centre()
 	add_child(arrow)
 	spawn()
 
@@ -48,21 +45,15 @@ func create_grid():
 func set_hex(array):
 	for i in array.size():
 		for j in array[i].size():
-			if pointy == true:
-				array[i][j] = Vector2(j + max(0, half - i), i) # pointy-top
-			else:
-				array[i][j] = Vector2(i, j + max(0, half - i)) # flat-top
+			array[i][j] = Vector2(j + max(0, half - i), i) # pointy-top
 	return array
 # координаты хексов в координаты в пикселях
 func hex_to_pixel(hex):
 	var x
 	var y
-	x = size_off * (sqrt(3) * hex.x + sqrt(3)/2 * hex.y)
-	y = size_off * (3./2 * hex.y)
-	if pointy == true:
-		return Vector2 (x, y)
-	else:
-		return Vector2(y, x)
+	x = (size + gap) * (sqrt(3) * hex.x + sqrt(3)/2 * hex.y)
+	y = (size + gap) * (3./2 * hex.y)
+	return Vector2 (x, y)
 # округление хекс координат
 func axial_round(vector):
 	var xgrid = round(vector.x)
@@ -75,29 +66,23 @@ func axial_round(vector):
 		return Vector2(xgrid, ygrid + round(vector.y + 0.5 * vector.x))
 # координаты пикселей в координаты хексов
 func pixel_to_hex(touchCoords):
-	var q
-	var r
-	if pointy == true:
-		q = (-1./3 * touchCoords.y + sqrt(3)/3 * touchCoords.x) / size_off
-		r = (2./3 * touchCoords.y) / size_off
-	else:
-		q = (2./3 * touchCoords.x) / size_off
-		r = (-1./3 * touchCoords.x  +  sqrt(3)/3 * touchCoords.y) / size_off
+	var q = (-1./3 * touchCoords.y + sqrt(3)/3 * touchCoords.x) / (size + gap)
+	var r = (2./3 * touchCoords.y) / (size + gap)
 	return axial_round(Vector2(q, r))
 # регистрируем нажатие
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
 	touch = pixel_to_hex(mouse_coords)
-	if is_in_grid(grid, touch):
+	if is_in_grid(coords_grid, touch):
 		if Input.is_action_just_pressed("touch"):
 			select.append(touch)
 			arrow.add_point(hex_to_pixel(touch))
 			print("current click:" + str(pixel_to_hex(mouse_coords)))
 			#print("next hex:" + str(pixel_to_hex(mouse_coords) + Vector2(0, -1)))
 			controlling = true
-		if Input.is_action_pressed("touch") and controlling and get_hex(grid, touch) != null:
+		if Input.is_action_pressed("touch") and controlling and get_hex(coords_grid, touch) != null:
 			# проверяем, что два последних хекса одного вида и соседи
-			if get_hex(grid, select[-1]).hex_type == get_hex(grid, touch).hex_type and is_neighbor(touch, select[-1]):
+			if get_hex(coords_grid, select[-1]).hex_type == get_hex(coords_grid, touch).hex_type and is_neighbor(touch, select[-1]):
 				if touch not in select:
 					#print(pixel_to_hex(mouse_coords))
 					select.append(touch)
@@ -115,7 +100,7 @@ func touch_input():
 		arrow.clear_points()
 		collapse()
 		controlling = false
-		get_parent().get_node("spawn_timer").start()
+		get_parent().get_node("grid/spawn_timer").start()
 # получаем индексы хекс координат
 func find_hex_index(array, hex):
 	for i in array.size():
@@ -151,8 +136,8 @@ func is_completed_chain(array):
 # взоимодействие с цепочкой, что делать после мэтча
 func chain_behavior(array):
 	for i in array:
-		get_hex(grid, i).disappear()
-		var index = find_hex_index(grid, i)
+		get_hex(coords_grid, i).disappear()
+		var index = find_hex_index(coords_grid, i)
 		spawned_grid[index.x][index.y] = null
 # коллапсим столбцы
 func collapse():
@@ -160,28 +145,23 @@ func collapse():
 		for i in width:
 			for j in (2 * half + 1) - abs(half - i):
 				if spawned_grid[i][j] == null:
-						var next_hex = grid[i][j] + Vector2(0, -1)
-						if is_in_grid(grid, next_hex) and get_hex(grid, next_hex) != null:
-							var next_index = find_hex_index(grid, next_hex)
-							spawned_grid[next_index.x][next_index.y].move(hex_to_pixel(grid[i][j]))
+						var next_hex = coords_grid[i][j] + Vector2(0, -1)
+						if is_in_grid(coords_grid, next_hex) and get_hex(coords_grid, next_hex) != null:
+							var next_index = find_hex_index(coords_grid, next_hex)
+							spawned_grid[next_index.x][next_index.y].move(hex_to_pixel(coords_grid[i][j]))
 							spawned_grid[i][j] = spawned_grid[next_index.x][next_index.y]
 							spawned_grid[next_index.x][next_index.y] = null
 # Спавним хексы
 func spawn():
 	if is_has_null(spawned_grid):
-		for i in grid.size():
-			for j in grid[i].size():
+		for i in width:
+			for j in (2 * half + 1) - abs(half - i):
 				if spawned_grid[i][j] == null:
 					var hex = possible_hexes.pick_random().instantiate()
 					add_child(hex)
-					hex.position = hex_to_pixel(grid[i][j])
-					#if pointy == true:
-						#hex.get_child(0).rotation_degrees = 90
+					hex.position = hex_to_pixel(coords_grid[i][j])
 					spawned_grid[i][j] = hex
 					hex.appear()
-# центруем камеру по сетке
-func camera_centre():
-	%Camera.position = hex_to_pixel(Vector2(half, half))
 
 func _on_spawn_timer_timeout() -> void:
 	spawn()
