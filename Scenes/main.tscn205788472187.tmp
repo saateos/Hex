@@ -89,11 +89,11 @@ text = "COINS:"
 label_settings = ExtResource("4_jjvhh")
 horizontal_alignment = 2
 
-[node name="Grid" type="Node2D" parent="."]
+[node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_jjgbg")
 
-[node name="spawn_timer" type="Timer" parent="Grid"]
+[node name="spawn_timer" type="Timer" parent="grid"]
 wait_time = 0.6
 one_shot = true
 
-[connection signal="timeout" from="Grid/spawn_timer" to="Grid" method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="grid/spawn_timer" to="grid" method="_on_spawn_timer_timeout"]
