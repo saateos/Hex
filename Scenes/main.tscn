@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://bw5lxb6pg3igs"]
+[gd_scene load_steps=8 format=3 uid="uid://bw5lxb6pg3igs"]
 
 [ext_resource type="Script" uid="uid://bkf6vt5kylni3" path="res://Scripts/camera.gd" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://bv0xmvd4vis7i" path="res://Scripts/game_logic.gd" id="1_21xkr"]
 [ext_resource type="Script" uid="uid://tmx2fxbm3com" path="res://Scripts/grid.gd" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://ddf6gmpfpt0jj" path="res://Scripts/panel.gd" id="2_kry3j"]
-[ext_resource type="Script" uid="uid://dmagkvckoqlno" path="res://Scripts/coins_count.gd" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://dmagkvckoqlno" path="res://Scripts/coin_count.gd" id="3_8gbba"]
 [ext_resource type="LabelSettings" uid="uid://ch17ktlsmcjti" path="res://Resources/label_settings.tres" id="4_jjvhh"]
+[ext_resource type="Script" uid="uid://brmrbs5wickyg" path="res://Scripts/shield.gd" id="6_6bp64"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -37,32 +38,51 @@ anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 25.0
+offset_right = -25.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
+[node name="Left" type="VBoxContainer" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Health" type="AspectRatioContainer" parent="Panel/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="Coins" type="AspectRatioContainer" parent="Panel/HBoxContainer/VBoxContainer" groups=["CoinGr"]]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/Left/Health"]
+self_modulate = Color(1, 0.141176, 0.137255, 1)
 layout_mode = 2
-alignment_horizontal = 0
+text = "HEALTH:"
+label_settings = ExtResource("4_jjvhh")
+
+[node name="Right" type="VBoxContainer" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Coin" type="AspectRatioContainer" parent="Panel/HBoxContainer/Right" groups=["CoinGr"]]
+layout_mode = 2
+alignment_horizontal = 2
 script = ExtResource("3_8gbba")
 
-[node name="display" type="Label" parent="Panel/HBoxContainer/VBoxContainer/Coins"]
+[node name="display" type="Label" parent="Panel/HBoxContainer/Right/Coin"]
 modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "COINS:"
 label_settings = ExtResource("4_jjvhh")
+horizontal_alignment = 2
 
-[node name="Shields" type="AspectRatioContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+[node name="Shield" type="AspectRatioContainer" parent="Panel/HBoxContainer/Right" groups=["ShieldGr"]]
 layout_mode = 2
-alignment_horizontal = 0
+alignment_horizontal = 2
+script = ExtResource("6_6bp64")
 
-[node name="display" type="Label" parent="Panel/HBoxContainer/VBoxContainer/Shields"]
+[node name="display" type="Label" parent="Panel/HBoxContainer/Right/Shield"]
 modulate = Color(0, 0.498039, 0.894118, 1)
 layout_mode = 2
 text = "ARMOR:"
 label_settings = ExtResource("4_jjvhh")
+horizontal_alignment = 2
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_jjgbg")

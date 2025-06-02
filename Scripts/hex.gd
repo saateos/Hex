@@ -22,4 +22,4 @@ func _ready():
 
 
 func _on_tree_exiting() -> void:
-	current_tree.call_group("GameLogic", "if_is_type", hex_type)
+	current_tree.call_group("GameLogic", "if_type", hex_type)
