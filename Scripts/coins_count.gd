@@ -1,4 +1,5 @@
 extends Container
+class_name CoinCount
 var current_value : int = 0
 var max_value : int = 10
 var worth : int = 1
@@ -12,4 +13,5 @@ func update_coins():
 		current_value = abs(max_value - current_value)
 		max_value += 10
 		print("UPGRADE")
-	get_child(0).text = "Coins: " + str(current_value) + "/" + str(max_value)
+	self.get_child(0).text = "Coins: " + str(current_value) + "/" + str(max_value)
+	#print(current_value)

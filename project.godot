@@ -31,7 +31,7 @@ window/stretch/scale=0.5
 
 [global_group]
 
-coin=""
+GameLogic=""
 
 [input]
 

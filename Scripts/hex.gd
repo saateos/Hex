@@ -2,6 +2,7 @@ extends Node2D
 #переменные
 @export var hex_type: String
 @export var color: Color
+var current_tree
 # анимации
 func move(target):
 	var tween:Tween = create_tween()
@@ -16,3 +17,9 @@ func disappear():
 	tween.tween_callback(self.queue_free)
 func _ready():
 	get_node("sprite").modulate = color
+	current_tree = get_tree()
+
+
+
+func _on_tree_exiting() -> void:
+	current_tree.call_group("GameLogic", "if_is_type", hex_type)

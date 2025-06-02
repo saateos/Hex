@@ -13,3 +13,5 @@ texture = ExtResource("1_tje73")
 
 [node name="icon" type="Sprite2D" parent="sprite"]
 rotation = -1.5708
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
