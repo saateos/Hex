@@ -13,7 +13,6 @@ var possible_hexes = [
 var line = preload("uid://bf501npeoutn4") #arrow
 var arrow = line.instantiate()
 
-var touch = Vector2(0, 0)
 var select = []
 var controlling = false
 # функция запуска
@@ -27,17 +26,19 @@ func _process(_delta):
 # регистрируем нажатие
 func touch_input():
 	var mouse_coords = get_global_mouse_position()
-	touch = grid_math.pixel_to_hex(mouse_coords)
+	var touch = grid_math.pixel_to_hex(mouse_coords)
 	if grid_math.is_in_grid(coords_grid, touch):
 		if Input.is_action_just_pressed("touch"):
 			select.append(touch)
 			arrow.add_point(grid_math.hex_to_pixel(touch))
 			print("current click:" + str(grid_math.pixel_to_hex(mouse_coords)))
-			#print("next hex:" + str(pixel_to_hex(mouse_coords) + Vector2(0, -1)))
 			controlling = true
-		if Input.is_action_pressed("touch") and controlling and grid_math.get_hex(coords_grid, spawned_grid, touch) != null:
-			# проверяем, что два последних хекса одного вида и соседи КАТАСТРОФА VVV
-			if grid_math.get_hex(coords_grid, spawned_grid, select[-1]).hex_type == grid_math.get_hex(coords_grid, spawned_grid, touch).hex_type and grid_math.is_neighbor(touch, select[-1]):
+		var current_hex = grid_math.get_hex(coords_grid, spawned_grid, touch)
+		if Input.is_action_pressed("touch") and controlling and current_hex != null:
+			# проверяем, что два последних хекса одного вида и соседи
+			var current_type = grid_math.get_hex(coords_grid, spawned_grid, touch).hex_type
+			var previous_type = grid_math.get_hex(coords_grid, spawned_grid, select[-1]).hex_type
+			if current_type == previous_type and grid_math.is_neighbor(touch, select[-1]):
 				if touch not in select:
 					select.append(touch)
 					arrow.add_point(grid_math.hex_to_pixel(touch))
@@ -47,18 +48,20 @@ func touch_input():
 	if Input.is_action_just_released("touch"):
 		if is_completed_chain(select):
 			chain_behavior(select)
-			collapse()
+		collapse()
 		select.clear()
 		arrow.clear_points()
+		get_parent().get_node("Grid/spawn_timer").start()
 		controlling = false
 # цепочка из 3х и больше элементов
 func is_completed_chain(array: Array):
 	if array.size() >= 3:
 		return true
 # взоимодействие с цепочкой, что делать после мэтча
-func chain_behavior(array: Array):
-	for i in array:
-		grid_math.get_hex(coords_grid, spawned_grid, i).disappear()
+func chain_behavior(chain: Array):
+	for i in chain:
+		var hex = grid_math.get_hex(coords_grid, spawned_grid, i)
+		hex.disappear()
 		var index = grid_math.get_hex_index(coords_grid, i)
 		spawned_grid[index.x][index.y] = null
 # коллапсим столбцы
@@ -67,13 +70,12 @@ func collapse() -> void:
 		for i in grid_math.width:
 			for j in (2 * grid_math.half + 1) - abs(grid_math.half - i):
 				if spawned_grid[i][j] == null:
-						var next_hex = coords_grid[i][j] + Vector2(0, -1)
-						if grid_math.is_in_grid(coords_grid, next_hex) and grid_math.get_hex(coords_grid, spawned_grid, next_hex) != null:
-							var next_index = grid_math.get_hex_index(coords_grid, next_hex)
+						var next_hex_coords = coords_grid[i][j] + Vector2(0, -1)
+						if grid_math.is_in_grid(coords_grid, next_hex_coords) and grid_math.get_hex(coords_grid, spawned_grid, next_hex_coords) != null:
+							var next_index = grid_math.get_hex_index(coords_grid, next_hex_coords)
 							spawned_grid[next_index.x][next_index.y].move(grid_math.hex_to_pixel(coords_grid[i][j]))
 							spawned_grid[i][j] = spawned_grid[next_index.x][next_index.y]
 							spawned_grid[next_index.x][next_index.y] = null
-							get_parent().get_node("Grid/spawn_timer").start()
 # Спавним хексы
 func spawn() -> void:
 	if grid_math.is_has_null(spawned_grid):
