@@ -1,10 +1,9 @@
-extends AspectRatioContainer
+extends Label
 var current_value = 0
 var max_value = 10
 var worth = 1
-var text
 func _ready() -> void:
-	get_child(0).text = "Coins: " + str(current_value) + "/" + str(max_value)
+	text = "Coins: " + str(current_value) + "/" + str(max_value)
 
 func coin_update():
 	current_value = current_value + worth
@@ -12,4 +11,4 @@ func coin_update():
 		current_value = abs(max_value - current_value)
 		max_value += 10
 		print("UPGRADE")
-	get_child(0).text = "Coins: " + str(current_value) + "/" + str(max_value)
+	text = "Coins: " + str(current_value) + "/" + str(max_value)

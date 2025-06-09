@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://bsf6v5q0u1rej" path="res://Sprites/heal.png" id="2_40pr6"]
 
 [node name="hex_heal" instance=ExtResource("1_1ptu7")]
-hex_type = "heal"
+type = "heal"
+purpose = "heal"
 color = Color(0.956863, 0.196078, 0.196078, 1)
 
 [node name="icon" parent="sprite" index="0"]
-rotation = -1.5708
 texture = ExtResource("2_40pr6")

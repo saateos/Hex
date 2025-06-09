@@ -1,9 +1,9 @@
 extends Node
 class_name GridMath
 # основные переменные
-@export var side = 4
-@export var gap = 5
-@export var size = 123
+var side = 4
+var gap = 5
+var size = 123
 var width : int = ( side * 2 ) - 1
 var half : int = side - 1
 # создаем пустой массив масиивов для шестиугольной сетки

@@ -1,5 +1,6 @@
 extends Node2D
 # переменные
+var grid_scale = get_scale()
 var coords_grid = []
 var spawned_grid = []
 var grid_math = GridMath.new()
@@ -36,15 +37,15 @@ func touch_input():
 		var current_hex = grid_math.get_hex(coords_grid, spawned_grid, touch)
 		if Input.is_action_pressed("touch") and controlling and current_hex != null:
 			# проверяем, что два последних хекса одного вида и соседи
-			var current_type = grid_math.get_hex(coords_grid, spawned_grid, touch).hex_type
-			var previous_type = grid_math.get_hex(coords_grid, spawned_grid, select[-1]).hex_type
-			if current_type == previous_type and grid_math.is_neighbor(touch, select[-1]):
-				if touch not in select:
-					select.append(touch)
-					arrow.add_point(grid_math.hex_to_pixel(touch))
-				elif select.find(touch)==select.size()-2:
-					select.pop_back()
-					arrow.remove_point(arrow.get_point_count() - 1)
+			var previous_hex = grid_math.get_hex(coords_grid, spawned_grid, select[-1])
+			if current_hex.type == previous_hex.type or current_hex.purpose == previous_hex.purpose:
+				if grid_math.is_neighbor(touch, select[-1]):
+					if touch not in select:
+						select.append(touch)
+						arrow.add_point(grid_math.hex_to_pixel(touch))
+					elif select.find(touch)==select.size()-2:
+						select.pop_back()
+						arrow.remove_point(arrow.get_point_count() - 1)
 	if Input.is_action_just_released("touch"):
 		if is_completed_chain(select):
 			chain_behavior(select)
@@ -62,8 +63,10 @@ func chain_behavior(chain: Array):
 	for i in chain:
 		var hex = grid_math.get_hex(coords_grid, spawned_grid, i)
 		hex.disappear()
-		var index = grid_math.get_hex_index(coords_grid, i)
-		spawned_grid[index.x][index.y] = null
+		get_tree().call_group("GameLogic", "if_type", hex.type)
+		if hex.type != "skull!!!":
+			var index = grid_math.get_hex_index(coords_grid, i)
+			spawned_grid[index.x][index.y] = null
 # коллапсим столбцы
 func collapse() -> void:
 	for k in grid_math.width:

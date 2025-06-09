@@ -4,7 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://daup3sd42x5y1" path="res://Sprites/shield.png" id="2_bv3a6"]
 
 [node name="hex_shield" instance=ExtResource("1_tuu2a")]
-hex_type = "shield"
+type = "shield"
+purpose = "shield"
 color = Color(0.25098, 0.513726, 0.996078, 1)
 
 [node name="icon" parent="sprite" index="0"]

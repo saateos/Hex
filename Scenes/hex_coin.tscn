@@ -4,7 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://qtfae7mugkio" path="res://Sprites/coins.png" id="2_eh5eb"]
 
 [node name="hex_coin" instance=ExtResource("1_3biq1")]
-hex_type = "coin"
+type = "coin"
+purpose = "coin"
 color = Color(0.917647, 1, 0.247059, 1)
 
 [node name="icon" parent="sprite" index="0"]
